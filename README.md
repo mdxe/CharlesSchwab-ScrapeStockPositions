@@ -1,4 +1,4 @@
-# Get Charles Schwab's Positions
+# Get Your Stock Positions from Charles Schwab's
 
 Get your current stock positions from Charles Schwab along with current price and your cost basis by scraping Charles Schwab's website using Selenium.  Heavily inspired from https://github.com/bakerqb/CharlesSchwab2.0.
 
