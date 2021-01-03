@@ -13,6 +13,6 @@ First create credentials.json and replace the dummy user and password with your 
 ```bash
 cp credentials.json.example credentials.json
 vim credentials.json
-python3 getPositions.py
+python3 getPositionsSchwab.py
 ```
 
