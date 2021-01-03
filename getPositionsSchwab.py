@@ -10,8 +10,8 @@ with open(path_to_json, "r") as handler:
         info = json.load(handler)
 
 def main():
-    username = info["user"]
-    password = info["password"]
+    username = info["schwab"]["user"]
+    password = info["schwab"]["password"]
 
     login_url = 'https://client.schwab.com/Login/SignOn/CustomerCenterLogin.aspx'
 
@@ -21,12 +21,11 @@ def main():
     # driver = webdriver.Firefox(executable_path=r'./geckodriver/geckodriver', options=opts)
     driver.maximize_window()
 
-    login(driver, username, password)
+    login(driver, login_url, username, password)
     getPositions(driver)
     driver.close()
 
-def login(driver, username, password):
-    login_url = 'https://client.schwab.com/Login/SignOn/CustomerCenterLogin.aspx'
+def login(driver, login_url, username, password):
     
     driver.get(login_url)
     
@@ -57,7 +56,7 @@ def getPositions(driver):
     print("Ticker", "QTY", "Cost Basis", "Share Price", sep=',')
     for row in myStocks:
         stockTicker = row.get_attribute("data-pulsr-symbol")
-        if stockName is not None:
+        if stockTicker is not None:
             stockQty       = row.get_attribute("data-pulsr-quantity")
             stockCostBasis = row.get_attribute("data-pulsr-cbdata")
             stockPrice     = row.find_element_by_css_selector('span.evt-tooltip[data-pulsr-field="TradePrice"]').text
