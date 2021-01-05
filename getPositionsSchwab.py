@@ -1,4 +1,4 @@
-import json
+import json, time
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
@@ -53,14 +53,27 @@ def getPositions(driver):
     driver.find_element_by_partial_link_text("Positions").click()
 
     myStocks = driver.find_elements_by_class_name("data-row")
-    print("Ticker", "QTY", "Cost Basis", "Share Price", sep=',')
+    print("Ticker", "QTY", "Cost Basis", "Share Price", "Ask Price", sep=',')
     for row in myStocks:
         stockTicker = row.get_attribute("data-pulsr-symbol")
         if stockTicker is not None:
             stockQty       = row.get_attribute("data-pulsr-quantity")
             stockCostBasis = row.get_attribute("data-pulsr-cbdata")
             stockPrice     = row.find_element_by_css_selector('span.evt-tooltip[data-pulsr-field="TradePrice"]').text
-            print(stockTicker, stockQty, "$"+stockCostBasis, stockPrice, sep=',')
+            WebDriverWait(driver,100).until(EC.element_to_be_clickable (
+                (By.CSS_SELECTOR, 'tbody.securityGroup:nth-child(3)')))
+            qq_textbox = driver.find_element_by_id('qqAutoSuggest')
+            qq_textbox.clear()
+            qq_textbox.send_keys(stockTicker)# + "\n")
+            driver.find_element_by_id('quote-primary-button').click()
+            time.sleep(1)
+            try:
+                stockAskPrice = driver.find_element_by_css_selector('ul.symbol-data:nth-child(5) > li:nth-child(2) > strong:nth-child(1)').text
+            except:
+                stockAskPrice = "X"
+     
+            if (int(stockQty) > 0):
+                print(stockTicker, stockQty, "$"+stockCostBasis, stockPrice, "$"+stockAskPrice, sep=',')
     return
 
 if __name__ == "__main__":
