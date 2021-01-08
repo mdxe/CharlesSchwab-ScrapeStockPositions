@@ -17,6 +17,7 @@ def main():
 
     opts = Options()
     # opts.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36")
+#    opts.headless = True
     driver = webdriver.Chrome('./chromedriver', options=opts)
     # driver = webdriver.Firefox(executable_path=r'./geckodriver/geckodriver', options=opts)
     driver.maximize_window()
@@ -52,7 +53,7 @@ def getPositions(driver):
     driver.implicitly_wait(10)
     driver.find_element_by_partial_link_text("Positions").click()
 
-    myStocks = driver.find_elements_by_class_name("data-row")
+    myStocks = driver.find_elements_by_xpath("//*[@class='data-shrinkedrow' or @class='data-row']")
     print("Ticker", "QTY", "Cost Basis", "Share Price", "Ask Price", sep=',')
     for row in myStocks:
         stockTicker = row.get_attribute("data-pulsr-symbol")
@@ -66,7 +67,7 @@ def getPositions(driver):
             qq_textbox.clear()
             qq_textbox.send_keys(stockTicker)# + "\n")
             driver.find_element_by_id('quote-primary-button').click()
-            time.sleep(1)
+            time.sleep(2)
             try:
                 stockAskPrice = driver.find_element_by_css_selector('ul.symbol-data:nth-child(5) > li:nth-child(2) > strong:nth-child(1)').text
             except:
