@@ -61,8 +61,8 @@ def getPositions(driver):
             stockQty       = row.get_attribute("data-pulsr-quantity")
             stockCostBasis = row.get_attribute("data-pulsr-cbdata")
             stockPrice     = row.find_element_by_css_selector('span.evt-tooltip[data-pulsr-field="TradePrice"]').text
-            WebDriverWait(driver,100).until(EC.element_to_be_clickable (
-                (By.CSS_SELECTOR, 'tbody.securityGroup:nth-child(3)')))
+            #WebDriverWait(driver,100).until(EC.element_to_be_clickable (
+            #    (By.CSS_SELECTOR, 'tbody.securityGroup:nth-child(3)')))
             qq_textbox = driver.find_element_by_id('qqAutoSuggest')
             qq_textbox.clear()
             qq_textbox.send_keys(stockTicker)# + "\n")
